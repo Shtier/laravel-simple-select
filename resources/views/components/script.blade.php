@@ -28,10 +28,17 @@
     
           init: function() {
               if (this.value && !this.selected) {
-                  this.selected = this.value;
-                  this.value = null;
+                if (this.multiple) {
+                  this.selected = [];
+                  this.value.forEach(function(el) {
+                    this.selected.push(el[this.valueField]);
+                  }, this);
+                }else{
+                    this.selected = this.value[0][this.valueField];
+                }
+                this.value = null;
               }
-    
+
               if (!this.selected) {
                   if (this.multiple) {
                       this.selected = [];
@@ -150,25 +157,25 @@
           getIndexFromSelectedValue: function(value) {    
               let valueField = this.valueField;
               return Object.values(this.dataSource).findIndex(function(x) {
-                  if (typeof x === 'object') {
-                      return x[valueField] === value;
+                  if (typeof value === 'object') {
+                      return x[valueField] === value[valueField];
                   } else {
-                      return x === value;
+                      return x[valueField] === value;
                   }
               });       
           },
     
           getTextFromSelectedValue: function(value) {
               let index = this.getIndexFromSelectedValue(value);
-              let valueField = this.valueField;
-              let foundValue = Object.values(this.dataSource).find(function(x) {
+              let textValue = this.textValue;
+              let foundText = Object.values(this.dataSource).find(function(x) {
                   if (typeof x === 'object') {
-                      return x[valueField] === value;
+                      return x[textValue] === value[textValue];
                   } else {
                       return x === value;
                   }
               });
-              return typeof foundValue === 'object' && this.dataSource[index] ? this.dataSource[index][this.textField] : foundValue;
+              return typeof foundText === 'object' && this.dataSource[index] ? this.dataSource[index][this.textField] : foundText;
           },
     
           getOptionFromSelectedValue: function(value) {
