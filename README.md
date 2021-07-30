@@ -133,6 +133,13 @@ $options = [
 // Above will output Option Value e.g NG 
 // Above will output Option Text e.g Nigeria
 
+$selected = [
+  ['value' => 'NG', 'text' => 'Nigeria']
+];
+$selectedMultiple = [
+  ['value' => 'NG', 'text' => 'Nigeria'],
+  ['value' => 'US', 'text' => 'United States']
+];
 @endphp
 ```
 ```html
@@ -201,7 +208,9 @@ $options = [
     placeholder="Select Country"
     search-input-placeholder="Search Country"
     :searchable="true"                                               
-    class="form-select"     
+    class="form-select"
+    clearable="true"
+    :value="$selected"     
 >
   <x-slot name="customSelected">
     <img class="float-left mr-2" :src="`https://www.countryflags.io/${option.code?.toLowerCase()}/shiny/24.png`">
@@ -212,6 +221,30 @@ $options = [
     <span x-text="option.name"></span>
   </x-slot>
 </x-simple-select>
+
+<x-simple-select       
+    name="country"
+    id="country"
+    :options="$options"
+    value-field='code'
+    text-field='name'
+    placeholder="Select Country"
+    search-input-placeholder="Search Country"
+    :searchable="true"                                               
+    class="form-select"
+    :value="$selectedMultiple"
+    multiple="true"
+>
+  <x-slot name="customSelected">
+    <img class="float-left mr-2" :src="`https://www.countryflags.io/${option.code?.toLowerCase()}/shiny/24.png`">
+    <span x-text="option.name"></span>
+  </x-slot>
+  <x-slot name="customOption">
+    <img class="float-left mr-2 -mt-1" :src="`https://www.countryflags.io/${option.code?.toLowerCase()}/shiny/32.png`">
+    <span x-text="option.name"></span>
+  </x-slot>
+</x-simple-select>
+
 ```
 
 
@@ -228,7 +261,8 @@ $options = [
     placeholder="Select Country"
     search-input-placeholder="Search Country"
     :searchable="true"                                               
-    class="form-select"     
+    class="form-select"
+    clearable="true"
 >
   <x-slot name="customOption">
     <img class="float-left mr-2 -mt-1" :src="option.flag">
